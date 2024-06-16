@@ -1,49 +1,59 @@
 import React, { useState } from 'react'
 
 import {
-  ButtonAdd,
   Container,
-  ContainerAdd,
   CountNumber,
   Counters,
   CountersView,
   Created,
   Done,
-  ImageAdd,
-  Input,
   Tasks
 } from './styles'
 import { Header } from '../components/Header'
-import { Task } from '../components/Task'
-import { FlatList } from 'react-native'
+import { Task, TaskList } from '../components/TaskList'
+import { Alert } from 'react-native'
+import { TodoInput } from '../components/Input'
 
 export function Home() {
-  const [tasks, setTasks] = useState<string[]>([])
-  const [taskDescr, setTaskDescr] = useState('')
+  const [task, setTask] = useState('')
+  const [tasks, setTasks] = useState<Task[]>([])
 
-  function handleTaskAdd() {
-    setTasks(prevState => [...prevState, taskDescr])
-    setTaskDescr('')
+  function handleTaskAdd(newTaskTitle: string) {
+    const data = {
+      id: Number(new Date().getTime()),
+      title: newTaskTitle,
+      done: false
+    }
+    const updatedTasks = tasks.map(task => ({ ...task }))
+    const checkTask = updatedTasks.find(item => item.title === newTaskTitle)
+
+    if (!checkTask) {
+      setTasks(oldState => [...oldState, data])
+    } else {
+      Alert.alert('Você não pode cadastrar uma task com o mesmo nome!')
+    }
   }
 
-  function handleTaskRemove(taskDescr: string) {
-    setTasks(prevState => prevState.filter(tasks => tasks !== taskDescr))
+  function handleToggleTaskDone(id: number) {
+    const updatedTasks = tasks.map(task => ({ ...task }))
+    const toggleTask = updatedTasks.find(item => item.id === id)
+
+    if (!toggleTask) return
+
+    toggleTask.done = !toggleTask.done
+    setTasks(updatedTasks)
+  }
+
+  function handleTaskRemove(id: number) {
+    setTasks(prevState => prevState.filter(task => task.id !== id))
   }
 
   return (
     <Container>
       <Header />
-      <ContainerAdd>
-        <Input
-          placeholder="Adicione uma nova tarefa"
-          placeholderTextColor="#808080"
-          onChangeText={text => setTaskDescr(text)}
-          value={taskDescr}
-        />
-        <ButtonAdd onPress={handleTaskAdd}>
-          <ImageAdd source={require('../../image/plus.png')} />
-        </ButtonAdd>
-      </ContainerAdd>
+
+      <TodoInput addTask={handleTaskAdd} />
+
       <Counters>
         <CountersView>
           <Created>Criadas</Created>
@@ -57,17 +67,10 @@ export function Home() {
       </Counters>
 
       <Tasks>
-        <FlatList
-          data={tasks}
-          keyExtractor={item => item}
-          renderItem={({ item }) => (
-            <Task
-              key={item}
-              task={item}
-              onRemove={() => handleTaskRemove(item)}
-              onCheck={() => handleTaskRemove}
-            />
-          )}
+        <TaskList
+          tasks={tasks}
+          toggleTaskDone={handleToggleTaskDone}
+          removeTask={handleTaskRemove}
         />
       </Tasks>
     </Container>

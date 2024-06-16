@@ -6,25 +6,36 @@ import {
   Delete,
   ImageCheck,
   ImageDelete,
-  TextTask
+  TextTask,
+  TextTaskDone
 } from './styles'
 
-type Props = {
-  task: string
-  onRemove: () => void
-  onCheck: () => void
+import { Task } from '../TaskList'
+
+interface TaskItemProps {
+  task: Task
+  toggleTaskDone: (id: number) => void
+  removeTask: (id: number) => void
 }
 
-export function Task({ task, onRemove, onCheck }: Props) {
+export function TaskItem({ task, toggleTaskDone, removeTask }: TaskItemProps) {
   return (
     <Container>
-      <Check onPress={onCheck}>
-        <ImageCheck source={require('../../../image/check.png')} />
+      <Check onPress={() => toggleTaskDone(task.id)}>
+        {task.done === true ? (
+          <ImageCheck source={require('../../../image/checkOk.png')} />
+        ) : (
+          <ImageCheck source={require('../../../image/check.png')} />
+        )}
       </Check>
 
-      <TextTask>{task}</TextTask>
+      {task.done === true ? (
+        <TextTaskDone>{task.title}</TextTaskDone>
+      ) : (
+        <TextTask>{task.title}</TextTask>
+      )}
 
-      <Delete onPress={onRemove}>
+      <Delete onPress={() => removeTask(task.id)}>
         <ImageDelete source={require('../../../image/trash.png')} />
       </Delete>
     </Container>

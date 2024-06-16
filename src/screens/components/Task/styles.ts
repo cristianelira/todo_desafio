@@ -29,6 +29,15 @@ export const TextTask = styled.Text`
   margin-bottom: 12px;
   flex: 1;
 `
+export const TextTaskDone = styled.Text`
+  font-size: 14px;
+  color: #808080;
+  margin-top: 12px;
+  margin-bottom: 12px;
+  flex: 1;
+  text-decoration-line: line-through;
+`
+
 export const Delete = styled.TouchableOpacity``
 
 export const ImageDelete = styled.Image`
