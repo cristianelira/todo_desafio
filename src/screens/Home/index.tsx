@@ -11,7 +11,7 @@ import {
 } from './styles'
 import { Header } from '../components/Header'
 import { Task, TaskList } from '../components/TaskList'
-import { Alert } from 'react-native'
+import { Alert, Keyboard, TouchableWithoutFeedback } from 'react-native'
 import { TodoInput } from '../components/Input'
 
 export function Home() {
@@ -65,30 +65,32 @@ export function Home() {
   })
 
   return (
-    <Container>
-      <Header />
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <Container>
+        <Header />
 
-      <TodoInput addTask={handleTaskAdd} />
+        <TodoInput addTask={handleTaskAdd} />
 
-      <Counters>
-        <CountersView>
-          <Created>Criadas</Created>
-          <CountNumber>{countTasks}</CountNumber>
-        </CountersView>
+        <Counters>
+          <CountersView>
+            <Created>Criadas</Created>
+            <CountNumber>{countTasks}</CountNumber>
+          </CountersView>
 
-        <CountersView>
-          <Done>Concluídas</Done>
-          <CountNumber>{countTasksDone}</CountNumber>
-        </CountersView>
-      </Counters>
+          <CountersView>
+            <Done>Concluídas</Done>
+            <CountNumber>{countTasksDone}</CountNumber>
+          </CountersView>
+        </Counters>
 
-      <Tasks>
-        <TaskList
-          tasks={tasks}
-          toggleTaskDone={handleToggleTaskDone}
-          removeTask={handleTaskRemove}
-        />
-      </Tasks>
-    </Container>
+        <Tasks>
+          <TaskList
+            tasks={tasks}
+            toggleTaskDone={handleToggleTaskDone}
+            removeTask={handleTaskRemove}
+          />
+        </Tasks>
+      </Container>
+    </TouchableWithoutFeedback>
   )
 }

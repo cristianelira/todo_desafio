@@ -2,6 +2,7 @@ import React from 'react'
 
 import {
   Container,
+  BorderEmpty,
   EmptyContainer,
   ImageEmpty,
   TextEmpty,
@@ -33,7 +34,7 @@ export function TaskList({
       keyExtractor={item => String(item.id)}
       contentContainerStyle={{ paddingBottom: 24 }}
       showsVerticalScrollIndicator={false}
-      renderItem={({ item, index }) => {
+      renderItem={({ item }) => {
         return (
           <TaskItem
             task={item}
@@ -44,11 +45,13 @@ export function TaskList({
       }}
       ListEmptyComponent={() => (
         <EmptyContainer>
-          <ImageEmpty source={require('../../../image/Clipboard.png')} />
-          <TextEmpty>Você ainda não tem tarefas cadastradas</TextEmpty>
-          <SubTextEmpty>
-            Crie tarefas e organize seus itens a fazer
-          </SubTextEmpty>
+          <BorderEmpty>
+            <ImageEmpty source={require('../../../image/Clipboard.png')} />
+            <TextEmpty>Você ainda não tem tarefas cadastradas</TextEmpty>
+            <SubTextEmpty>
+              Crie tarefas e organize seus itens a fazer
+            </SubTextEmpty>
+          </BorderEmpty>
         </EmptyContainer>
       )}
       style={{

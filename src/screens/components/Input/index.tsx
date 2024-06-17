@@ -8,6 +8,7 @@ interface TodoInputProps {
 
 export function TodoInput({ addTask }: TodoInputProps) {
   const [task, setTask] = useState('')
+  const [active, setActive] = useState(false)
 
   function handleAddNewTask() {
     if (task != '') {
@@ -23,6 +24,9 @@ export function TodoInput({ addTask }: TodoInputProps) {
         placeholderTextColor="#808080"
         value={task}
         onChangeText={setTask}
+        onFocus={() => setActive(true)}
+        active={active}
+        onBlur={() => setActive(false)}
       />
       <ButtonAdd onPress={handleAddNewTask}>
         <ImageAdd source={require('../../../image/plus.png')} />
