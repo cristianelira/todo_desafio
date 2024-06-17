@@ -45,8 +45,10 @@ export function TaskList({
       ListEmptyComponent={() => (
         <EmptyContainer>
           <ImageEmpty source={require('../../../image/Clipboard.png')} />
-          <TextEmpty></TextEmpty>
-          <SubTextEmpty></SubTextEmpty>
+          <TextEmpty>Você ainda não tem tarefas cadastradas</TextEmpty>
+          <SubTextEmpty>
+            Crie tarefas e organize seus itens a fazer
+          </SubTextEmpty>
         </EmptyContainer>
       )}
       style={{

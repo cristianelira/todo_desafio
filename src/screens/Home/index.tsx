@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import {
   Container,
@@ -15,8 +15,9 @@ import { Alert } from 'react-native'
 import { TodoInput } from '../components/Input'
 
 export function Home() {
-  const [task, setTask] = useState('')
   const [tasks, setTasks] = useState<Task[]>([])
+  const [countTasks, setCountTasks] = useState(0)
+  const [countTasksDone, setCountTasksDone] = useState(0)
 
   function handleTaskAdd(newTaskTitle: string) {
     const data = {
@@ -48,6 +49,21 @@ export function Home() {
     setTasks(prevState => prevState.filter(task => task.id !== id))
   }
 
+  async function counter() {
+    try {
+      const countTasks = tasks.length
+      const countTasksDone = tasks.filter(task => task.done === true).length
+      setCountTasks(countTasks)
+      setCountTasksDone(countTasksDone)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    counter()
+  })
+
   return (
     <Container>
       <Header />
@@ -57,12 +73,12 @@ export function Home() {
       <Counters>
         <CountersView>
           <Created>Criadas</Created>
-          <CountNumber>0</CountNumber>
+          <CountNumber>{countTasks}</CountNumber>
         </CountersView>
 
         <CountersView>
           <Done>Concluídas</Done>
-          <CountNumber>0</CountNumber>
+          <CountNumber>{countTasksDone}</CountNumber>
         </CountersView>
       </Counters>
 
